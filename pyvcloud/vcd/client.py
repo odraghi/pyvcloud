@@ -28,6 +28,7 @@ from lxml import etree
 from lxml import objectify
 import requests
 
+from pyvcloud.vcd.api_helper import ApiHelper
 from pyvcloud.vcd.vcd_api_version import VCDApiVersion
 from pyvcloud.vcd.exceptions import AccessForbiddenException, \
     BadRequestException, ClientException, ConflictException, \
@@ -1245,13 +1246,18 @@ class Client(object):
                     media_type=None,
                     objectify_results=True,
                     params=None,
-                    extra_headers=None):
+                    extra_headers=None,
+                    object_results=False):
+        accept_type=None
+        if object_results:
+            accept_type='application/json'
         response = self._do_request_prim(
             method,
             uri,
             self._session,
             contents=contents,
             media_type=media_type,
+            accept_type=accept_type,
             params=params,
             extra_headers=extra_headers)
 
@@ -1260,6 +1266,9 @@ class Client(object):
                   requests.codes.created,
                   requests.codes.accepted,
                   requests.codes.no_content):
+            if object_results:
+                api_helper=ApiHelper()
+                return(api_helper.deserialize(response, response_type='object'))
             return _objectify_response(response, objectify_results)
 
         self._response_code_to_exception(
@@ -1540,14 +1549,14 @@ class Client(object):
                 "Operation is not supported").with_traceback(e.__traceback__)
 
     def get_resource(self, uri, params=None, objectify_results=True,
-                     extra_headers=None):
+                     extra_headers=None, object_results=False):
         """Gets the specified contents to the specified resource.
 
         This method does an HTTP GET.
         """
         return self._do_request(
             'GET', uri, objectify_results=objectify_results, params=params,
-            extra_headers=extra_headers)
+            extra_headers=extra_headers, object_results=object_results)
 
     def get_linked_resource(self, resource, rel, media_type,
                             extra_headers=None):
