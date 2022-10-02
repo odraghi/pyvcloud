@@ -38,7 +38,7 @@ from vcloud.api.rest.schema_v1_5.query_result_record_type import \
 from vcloud.rest.openapi import models
 from vcloud.rest.openapi.models import session
 
-from pyvcloud.vcd.client import ClientException
+from pyvcloud.vcd.exceptions import ClientException
 
 
 class ApiHelper(object):
