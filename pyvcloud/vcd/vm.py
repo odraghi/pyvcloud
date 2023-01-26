@@ -996,6 +996,18 @@ class VM(object):
         return self.client.post_linked_resource(
             self.resource, RelationType.CHECK_COMPLIANCE, None, None)
 
+    def reapply_compute_policy(self):
+        """Reapply Compute Policy of a VM.
+
+        :return: an object containing EntityType.TASK XML data which represents
+                    the asynchronous task that is checking compliance of VM
+
+        :rtype: lxml.objectify.ObjectifiedElement
+        """
+        self.get_resource()
+        return self.client.post_linked_resource(
+            self.resource, RelationType.REAPPLY_COMPUTE_POLICY, EntityType.VM.value, None)
+
     def customize_at_next_power_on(self):
         """Customize VM at next power on.
 

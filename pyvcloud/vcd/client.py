@@ -257,6 +257,7 @@ class RelationType(Enum):
     POWER_SHUTDOWN = 'power:shutdown'
     POWER_SUSPEND = 'power:suspend'
     PUBLISH = 'publish'
+    REAPPLY_COMPUTE_POLICY = 'reapplyComputePolicy'
     RECOMPOSE = 'recompose'
     RECONFIGURE_VM = 'reconfigureVm'
     RELOAD_FROM_VC = 'reloadFromVc'
